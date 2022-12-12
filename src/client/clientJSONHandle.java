@@ -134,17 +134,18 @@ public class clientJSONHandle {
 
 	}
 
-	public static String getSalt(String UID) throws ClassNotFoundException, SQLException {
-		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
-		jsonRoot.put("StatusCode", 01);// 01: 정상, 02: 유저 없음, 03: 비번 틀림 // If문 처리하여 Statcode 따라서 이후 Put, Get 다르게.
+	public static String getSalt(String line)
+			throws ClassNotFoundException, SQLException, org.json.simple.parser.ParseException {
+		JSONParser parser = new JSONParser();
 
-		JSONObject jsonData = new JSONObject(); // data 객체 생성
-		jsonData.put("salt", SQLInterface.getSaltbyUID(UID));
-		jsonRoot.put("data", jsonData); // json 생성
-
-		String json = jsonRoot.toJSONString(); // String 변환
-
-		return json;
+		JSONObject jsonResult = (JSONObject) parser.parse(line); // json객체 선언 (json 파싱)
+		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
+		if (StatusCode == 01) {
+			JSONObject jsoninner = (JSONObject) jsonResult.get("data");
+			String salt = (String) jsoninner.get("salt");
+			return salt;
+		}
+		return null;
 	}
 
 	public static String getError(int i) {

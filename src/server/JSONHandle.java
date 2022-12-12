@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 public class JSONHandle {
 
-	public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
+	public static void test(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
 		Socket socket = null;
 
 		// 연결 요청 //

@@ -17,6 +17,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import org.json.simple.parser.ParseException;
+
+import server.JSONHandle;
+
 public class LoginFrame extends JFrame implements ActionListener {
 
 	ImageIcon icon; // 백그라운드 이미지
@@ -144,16 +148,33 @@ public class LoginFrame extends JFrame implements ActionListener {
 			mainClient.pw.println(clientJSONHandle.make101(uid));
 			while (true) {
 				try {
-					String salt = clientJSONHandle.getSalt(mainClient.br.readLine());
-					String pw = null;
-					try {
-						pw = Salt.validate(upass, salt);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					String line = mainClient.br.readLine();
+					if (JSONHandle.getSCode(line) == 1) {
+						String salt = clientJSONHandle.getSalt(line);
+						String pw = null;
+						try {
+							pw = Salt.validate(upass, salt);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						mainClient.pw.println(clientJSONHandle.make102(uid, pw));
+						while (true) {
+							String line102 = mainClient.br.readLine();
+							if (JSONHandle.getSCode(line102) == 1) {
+								try {
+									User user = clientJSONHandle.makeJSONtoUser(line102);
+									mainClient.thisUser = user;
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+								break;
+							}
+						}
+						break;
 					}
-					mainClient.pw.println(clientJSONHandle.make102(uid, pw));
-				} catch (IOException | ClassNotFoundException | SQLException e1) {
+				} catch (IOException | ClassNotFoundException | SQLException | ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
