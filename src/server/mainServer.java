@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -21,6 +22,11 @@ public class mainServer {
 	public Integer roomNum = 1;
 
 	public mainServer() throws IOException {
+		  InetAddress address = InetAddress.getLocalHost();
+	      PrintWriter server_info = new PrintWriter("server_info.dat");
+	      server_info.write(address.getHostAddress()); // ip ì£¼ì†Œ ë°›ì•„ì˜¤ê¸°
+	      server_info.write("\n" + portNum);
+	      server_info.close();
 		listener = new ServerSocket(portNum); // initialize
 	}
 
@@ -34,7 +40,7 @@ public class mainServer {
 		}
 	}
 
-	private class Connection extends Thread // Thread¸¦ »ó¼Ó¹ÞÀ½
+	private class Connection extends Thread // Threadï¿½ï¿½ ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½
 	{
 		private volatile BufferedReader br;
 		private volatile PrintWriter pw;
