@@ -22,11 +22,11 @@ public class mainServer {
 	public Integer roomNum = 1;
 
 	public mainServer() throws IOException {
-		  InetAddress address = InetAddress.getLocalHost();
-	      PrintWriter server_info = new PrintWriter("server_info.dat");
-	      server_info.write(address.getHostAddress()); // ip 주소 받아오기
-	      server_info.write("\n" + portNum);
-	      server_info.close();
+		InetAddress address = InetAddress.getLocalHost();
+		PrintWriter server_info = new PrintWriter("server_info.dat");
+		server_info.write(address.getHostAddress()); // ip 二쇱냼 諛쏆븘�삤湲�
+		server_info.write("\n" + portNum);
+		server_info.close();
 		listener = new ServerSocket(portNum); // initialize
 	}
 
@@ -40,7 +40,7 @@ public class mainServer {
 		}
 	}
 
-	private class Connection extends Thread // Thread�� ��ӹ���
+	private class Connection extends Thread // Thread占쏙옙 占쏙옙達占쏙옙占�
 	{
 		private volatile BufferedReader br;
 		private volatile PrintWriter pw;
