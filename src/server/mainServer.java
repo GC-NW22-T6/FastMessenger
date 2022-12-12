@@ -6,8 +6,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.simple.parser.ParseException;
 
 public class mainServer {
 	private final static int portNum = 52273;
@@ -16,6 +19,8 @@ public class mainServer {
 	Map<String, Connection> client_all = new HashMap<>(); // manage users
 
 	public Integer roomNum = 1;
+	public Object scode;
+	public Object scode;
 
 	public mainServer() throws IOException {
 		listener = new ServerSocket(portNum); // initialize
@@ -38,6 +43,7 @@ public class mainServer {
 		private String clientName; // client user ID
 //		private String client_ip; // client ip
 //		private InetAddress client_inet; // get ip address
+		private Object scode;
 
 		Connection(Socket s) throws IOException {
 			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -46,7 +52,45 @@ public class mainServer {
 
 		public void run() {
 			String line = null;
+			try {
 
+				while ((line = br.readLine()) != null) {
+					Integer scode = JSONHandle.getSCode(line);
+					if (scode == 101) { // Login: get salt to login
+						String salt = JSONHandle.getSalt(line);
+						pw.println(salt);
+						break;
+					} else if (scode == 102) { // Login: Login function
+						Integer valid = JSONHandle.validIDPW(line);
+						if (valid == 1) { // Login success
+							User user = SQLInterface.getuserbyUID(JSONHandle.getUID(line));
+							pw.println(JSONHandle.makeUsertoJSON(user));
+							break;
+						} else if (valid == 2) { // Wrong PW
+							pw.println(JSONHandle.getError(02));
+						} else { // Wrong ID
+							pw.println(JSONHandle.getError(03));
+						}
+					} else if (scode == 201) { // Join
+
+					}
+				}
+			} catch (IOException | ParseException e) {
+				synchronized (client_all) {
+					try {
+						SQLInterface.client_logout(this.getClientName());
+					} catch (ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					}
+					client_all.remove(this.getClientName());
+				}
+			} finally {
+			}
 		}
+
+		public String getClientName() {
+			return this.clientName;
+		}
+
 	}
 }
