@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -140,6 +141,17 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 			mainClient.setClientName(uid);
 			mainClient.pw.println(JSONHandle.make101(uid));
+			while (true) {
+				try {
+					Integer temp = Integer.parseInt(mainClient.br.readLine());
+					if (temp == 1) {
+
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 
 		}
 

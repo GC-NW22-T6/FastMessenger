@@ -41,4 +41,8 @@ public class mainClient {
 	static public void setClientName(String tempName) {
 		CID = tempName;
 	}
+
+	public static void main(String[] args) throws IOException {
+		new mainClient();
+	}
 }

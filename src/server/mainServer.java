@@ -41,7 +41,6 @@ public class mainServer {
 		private String clientName; // client user ID
 //		private String client_ip; // client ip
 //		private InetAddress client_inet; // get ip address
-		private Object scode;
 
 		Connection(Socket s) throws IOException {
 			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -108,4 +107,9 @@ public class mainServer {
 		}
 
 	}
+
+	public static void main(String[] args) throws IOException {
+		new mainServer().runServer();
+	}
+
 }
