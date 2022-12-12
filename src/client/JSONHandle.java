@@ -181,4 +181,17 @@ public class JSONHandle {
 		return SQLInterface.validPWChange(id, name, phone, pw, salt);
 	}
 
+	public static String make101(String uid) {
+		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
+		jsonRoot.put("StatusCode", 101);
+		JSONObject jsonData = new JSONObject(); // data 객체 생성
+		jsonData.put("ID", uid);
+		jsonRoot.put("data", jsonData); // json 생성
+
+		String json = jsonRoot.toJSONString(); // String 변환
+
+		return json;
+
+	}
+
 }

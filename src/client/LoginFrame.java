@@ -129,7 +129,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 	// loginAction
 
 	public class LoginCheck implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			/* TextField에 입력된 아이디와 비밀번호를 변수에 초기화 */
@@ -138,6 +137,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 			for (int i = 0; i < pw.getPassword().length; i++) {
 				upass = upass + pw.getPassword()[i];
 			}
+
+			mainClient.setClientName(uid);
+			mainClient.pw.println(JSONHandle.make101(uid));
 
 		}
 
