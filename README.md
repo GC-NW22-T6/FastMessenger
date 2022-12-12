@@ -1,4 +1,5 @@
-# FastMessenger -Actually non-fastest
+# FastMessenger -Make a simple Chat by JAVA Socket, MySQL(JDBC)
+##### Actually non-fastest
 ### Gachon University
 School of Computing Software Major<br />
 Computer Network & programming (14464_001) Fall 2022<br/>
