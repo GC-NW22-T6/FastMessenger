@@ -1,19 +1,11 @@
 package client;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
 public class CheckFrame extends JFrame implements ActionListener {
 
@@ -52,7 +44,7 @@ public class CheckFrame extends JFrame implements ActionListener {
 			public void setBorder(Border border) {
 			}
 		};
-		id.setBounds(73, 156, 327, 15);
+		id.setBounds(83, 170, 327, 15);
 		checkPanel.add(id);
 		id.setOpaque(false);
 		id.setColumns(10);
@@ -62,30 +54,30 @@ public class CheckFrame extends JFrame implements ActionListener {
 			public void setBorder(Border border) {
 			}
 		};
-		name.setBounds(57, 106, 149, 15);
+		name.setBounds(70, 124, 149, 15);
 		checkPanel.add(name);
 		name.setOpaque(false);
 		name.setColumns(10);
-
+		
 		phoneNumber = new JTextField() {
 			@Override
 			public void setBorder(Border border) {
 			}
 		};
-		phoneNumber.setBounds(83, 257, 315, 16);
+		phoneNumber.setBounds(101, 215, 315, 16);
 		checkPanel.add(phoneNumber);
 		phoneNumber.setOpaque(false);
 		phoneNumber.setColumns(10);
 
 		/* Button 크기 작업 */
 		goBtn = new JButton();
-		goBtn.setBounds(119, 504, 195, 38);
+		goBtn.setBounds(377, 280, 59, 32);
 		goBtn.setContentAreaFilled(false);
 		goBtn.setBorderPainted(false);
 		checkPanel.add(goBtn);
-
+		
 		ExitBtn = new JButton();
-		ExitBtn.setBounds(119, 504, 195, 38);
+		ExitBtn.setBounds(309, 281, 61, 32);
 		ExitBtn.setContentAreaFilled(false);
 		ExitBtn.setBorderPainted(false);
 		checkPanel.add(ExitBtn);
@@ -100,26 +92,31 @@ public class CheckFrame extends JFrame implements ActionListener {
 		setSize(455, 360);
 		setLocationRelativeTo(null);
 		checkPanel.setLayout(null);
-
+		
 		setResizable(false);
 		setVisible(true);
 	}
 
 	/* Button 이벤트 리스너 */
-
+	
 	public void actionPerformed(ActionEvent e) {
 		String uid = id.getText();
 		String uName = name.getText();
 		String uPN = phoneNumber.getText();
-		/*
-		 * if (e.getSource() == goBtn) { if (uid.equals("") || upass.equals("")) {
-		 * JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패",
-		 * JOptionPane.ERROR_MESSAGE); System.out.println("회원가입 실패 > 회원정보 미입력"); }
-		 * 
-		 * else if (!uid.equals("") && !uName.equals("") && !uPN.equals("")) { if (함수
-		 * 들어가야함) { } } }
-		 */
-		if (e.getSource() == ExitBtn) {
+		/*if (e.getSource() == goBtn) {
+			if (uid.equals("") || upass.equals("")) {
+				JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
+				System.out.println("회원가입 실패 > 회원정보 미입력");
+			}
+
+			else if (!uid.equals("") && !uName.equals("") && !uPN.equals("")) {
+				if (함수 들어가야함) {
+				}
+			}
+		}
+		*/
+		if(e.getSource() == ExitBtn)
+		{
 			dispose();
 		}
 

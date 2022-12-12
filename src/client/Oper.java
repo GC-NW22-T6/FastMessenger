@@ -1,5 +1,6 @@
 package client;
 
+
 public class Oper {
 	User us = null;
 	LoginFrame lf = null;
@@ -7,11 +8,11 @@ public class Oper {
 	MainFrame mf = null;
 	CheckFrame ckf = null;
 	ChangeFrame chf = null;
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args)
+	{
 		Oper opr = new Oper();
-
-		opr.lf = new LoginFrame();
-		opr.mf = new MainFrame();
+		
+		opr.lf= new LoginFrame();
 	}
 }

@@ -1,26 +1,33 @@
 package client;
 
-import java.awt.CardLayout;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 public class MainFrame extends JFrame {
 	ImageIcon icon; // 백그라운드 이미지
 	ImageIcon icon2; // 홈패널 이미지
 	ImageIcon icon3; // 찾기패널 이미지
 	JPanel Main;
-	JPanel ViewCard;
+	JPanel ViewCard, WeatherPanel;
 
-	JButton HomeButton;
-	JButton SearchButton;
+	JButton HomeButton, SearchButton, LogOutBtn, FriendSearchBtn, UserBtn;
+
+	JLabel UserLabel, UserStateLabel;
+
+	JScrollPane inscrollPane = new JScrollPane(); // online 친구창
+	JScrollPane outscrollPane = new JScrollPane(); // offline 친구창
+	JScrollPane fscrollPane = new JScrollPane(); // 친구 찾기 창
+
+	WeatherPanel weather;
 
 	CardLayout vc;
-	// SearchPanel sp;
 
 	MainFrame() {
 		icon = new ImageIcon("src/Image/MainFrame.png");
@@ -37,6 +44,50 @@ public class MainFrame extends JFrame {
 		Main.setLayout(null);
 		setSize(520, 800);
 		getContentPane().add(Main);
+
+		try {
+			weather = new WeatherPanel("날씨");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParserConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String[] temp = new String[5];
+		temp = weather.get();
+
+		// 날씨 공공데이터 추가
+		WeatherPanel = new JPanel();
+		WeatherPanel.setBounds(70, 602, 420, 135);
+		WeatherPanel.setBackground(new Color(255, 255, 0));
+
+		WeatherPanel.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel(temp[0]);
+		lblNewLabel.setBounds(12, 10, 324, 15);
+		WeatherPanel.add(lblNewLabel);
+
+		JLabel lblNewLabel_1 = new JLabel(temp[1]);
+		lblNewLabel_1.setBounds(12, 31, 324, 15);
+		WeatherPanel.add(lblNewLabel_1);
+
+		JLabel lblNewLabel_2 = new JLabel(temp[2]);
+		lblNewLabel_2.setBounds(12, 56, 324, 15);
+		WeatherPanel.add(lblNewLabel_2);
+
+		JLabel lblNewLabel_3 = new JLabel(temp[3]);
+		lblNewLabel_3.setBounds(12, 79, 324, 15);
+		WeatherPanel.add(lblNewLabel_3);
+
+		JLabel lblNewLabel_4 = new JLabel(temp[4]);
+		lblNewLabel_4.setBounds(12, 104, 324, 15);
+		WeatherPanel.add(lblNewLabel_4);
+
+		Main.add(WeatherPanel);
 
 		// 홈버튼
 		HomeButton = new JButton();
@@ -64,8 +115,42 @@ public class MainFrame extends JFrame {
 				g.drawImage(changeIcon2.getImage(), 0, 0, null);
 				setOpaque(false);
 				super.paintComponent(g);
+
+				// 친구 목록 창
+				inscrollPane.setEnabled(false);
+				inscrollPane.setBounds(22, 124, 420, 200);
+				inscrollPane.setBackground(Color.WHITE);
+				inscrollPane.getViewport().setBackground(Color.WHITE);
+				outscrollPane.setEnabled(false);
+				outscrollPane.setBounds(22, 387, 420, 200);
+				outscrollPane.setBackground(Color.WHITE);
+				outscrollPane.getViewport().setBackground(Color.WHITE);
+
 			}
 		};
+
+		HomePanel.setLayout(null);
+		// 유저 이름 라벨
+		UserLabel = new JLabel("유저 이름");
+		UserLabel.setBounds(63, 24, 82, 24);
+
+		// 유저 상태메시지 라벨
+		UserStateLabel = new JLabel("유저 상태메시지");
+		UserStateLabel.setBounds(63, 48, 300, 20);
+
+		// 유저 프로필 버튼
+		UserBtn = new JButton();
+		UserBtn.setBounds(22, 34, 33, 30);
+		UserBtn.setContentAreaFilled(false);
+		// HomeButton.setBorderPainted(false);
+		UserBtn.setFocusPainted(false);
+
+		// 홈버튼
+		HomePanel.add(UserBtn);
+		HomePanel.add(inscrollPane);
+		HomePanel.add(outscrollPane);
+		HomePanel.add(UserLabel);
+		HomePanel.add(UserStateLabel);
 
 		icon3 = new ImageIcon("src/Image/Search.png");
 		Image img3 = icon3.getImage();
@@ -77,8 +162,46 @@ public class MainFrame extends JFrame {
 				g.drawImage(changeIcon3.getImage(), 0, 0, null);
 				setOpaque(false);
 				super.paintComponent(g);
+
+				// 친구 찾기 목록창
+				fscrollPane.setEnabled(false);
+				fscrollPane.setBounds(17, 54, 400, 450);
+				fscrollPane.setBackground(Color.WHITE);
+				fscrollPane.getViewport().setBackground(Color.WHITE);
+
 			}
 		};
+
+		SearchPanel.setLayout(null);
+		SearchPanel.add(fscrollPane);
+
+		// 친구 검색 창
+		JTextField ftxt = new JTextField();
+		ftxt.setBounds(17, 13, 330, 30);
+		SearchPanel.add(ftxt);
+
+		// 친구 찾기 버튼 -> 누르면 친구 찾음
+		FriendSearchBtn = new JButton(new ImageIcon("src/Image/btn.png")); // 버튼 배경 이미지 설정
+		FriendSearchBtn.setBounds(370, 13, 30, 30);
+
+		// 친구 찾기 버튼을 눌렀을 때 발생
+		FriendSearchBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+
+		// 로그아웃 버튼
+		LogOutBtn = new JButton();
+		LogOutBtn.setBounds(15, 110, 30, 24);
+		LogOutBtn.setContentAreaFilled(false);
+		// LogOutBtn.setBorderPainted(false);
+		LogOutBtn.setFocusPainted(false);
+		Main.add(LogOutBtn);
+
+		SearchPanel.add(FriendSearchBtn);
 
 		ViewCard = new JPanel();
 		vc = new CardLayout();
@@ -102,7 +225,20 @@ public class MainFrame extends JFrame {
 			vc.show(ViewCard, "sc");
 		});
 
+		UserBtn.addActionListener(event -> {
+			// 프로필메시지 선택 할때 함수
+		});
+
+		LogOutBtn.addActionListener(event -> {
+
+		});
+
+		setTitle("채팅 메신저");
+
 		setVisible(true);
+		setLocationRelativeTo(null);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public static void main(String[] args) {

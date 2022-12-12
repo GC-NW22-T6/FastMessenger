@@ -1,21 +1,11 @@
 package client;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
 public class JoinFrame extends JFrame implements ActionListener {
 
@@ -89,7 +79,7 @@ public class JoinFrame extends JFrame implements ActionListener {
 		signup.add(nickname);
 		nickname.setOpaque(false);
 		nickname.setColumns(10);
-
+		
 		phoneNumber = new JTextField() {
 			@Override
 			public void setBorder(Border border) {
@@ -105,7 +95,7 @@ public class JoinFrame extends JFrame implements ActionListener {
 			public void setBorder(Border border) {
 			}
 		};
-		birth.setBounds(80, 329, 308, 14);
+		birth .setBounds(80, 329, 308, 14);
 		signup.add(birth);
 		birth.setOpaque(false);
 		birth.setColumns(10);
@@ -132,7 +122,7 @@ public class JoinFrame extends JFrame implements ActionListener {
 	}
 
 	/* Button 이벤트 리스너 */
-
+	
 	public void actionPerformed(ActionEvent e) {
 		String uid = id.getText();
 		String upass = "";

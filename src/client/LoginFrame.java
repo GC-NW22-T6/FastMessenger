@@ -1,21 +1,14 @@
 package client;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
+
+import java.awt.*;
+import javax.swing.event.*;
+
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class LoginFrame extends JFrame implements ActionListener {
 
@@ -92,7 +85,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 		changeBtn = new JButton();
 		changeBtn.setBounds(222, 396, 128, 14);
-		// changeBtn.setBorderPainted(false);
+		changeBtn.setBorderPainted(false);
 		changeBtn.setContentAreaFilled(false);
 		login.add(changeBtn);
 
@@ -131,6 +124,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	// loginAction
 
 	public class LoginCheck implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			/* TextField에 입력된 아이디와 비밀번호를 변수에 초기화 */
@@ -138,25 +132,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 			String upass = "";
 			for (int i = 0; i < pw.getPassword().length; i++) {
 				upass = upass + pw.getPassword()[i];
-			}
-
-			mainClient.setClientName(uid);
-			mainClient.pw.println(clientJSONHandle.make101(uid));
-			while (true) {
-				try {
-					String salt = clientJSONHandle.getSalt(mainClient.br.readLine());
-					String pw = null;
-					try {
-						pw = Salt.validate(upass, salt);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					mainClient.pw.println(clientJSONHandle.make102(uid, pw));
-				} catch (IOException | ClassNotFoundException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 
 		}

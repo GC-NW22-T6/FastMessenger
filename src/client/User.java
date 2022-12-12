@@ -1,7 +1,6 @@
 package client;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.io.InputStream;
 
 public class User {
 
@@ -10,11 +9,7 @@ public class User {
 	private String userPhoneNum; // phone_num
 	private String userEmail; // email
 	private String userPassword; // password
-	private String userNickname; // Nickname
-	private Date userBitrhDate; // Birth
-	private String salt; // salt
-	private Timestamp userLastCon; // Last connection time
-	private String statMessage;
+	private InputStream inputStream;
 
 	public String getUserID() {
 		return userID;
@@ -30,14 +25,6 @@ public class User {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getUserPhoneNum() {
-		return userPhoneNum;
-	}
-
-	public void setUserPhoneNum(String userPhoneNum) {
-		this.userPhoneNum = userPhoneNum;
 	}
 
 	public String getUserEmail() {
@@ -56,44 +43,19 @@ public class User {
 		this.userPassword = userPassword;
 	}
 
-	public String getUserNickname() {
-		return userNickname;
+	public String getUserPhoneNum() {
+		return userPhoneNum;
 	}
 
-	public void setUserNickname(String userNickname) {
-		this.userNickname = userNickname;
+	public void setUserPhoneNum(String userPhoneNum) {
+		this.userPhoneNum = userPhoneNum;
 	}
 
-	public Date getUserBitrhDate() {
-		return userBitrhDate;
+	public InputStream getInputStream() {
+		return inputStream;
 	}
 
-	public void setUserBitrhDate(Date userBitrhDate) {
-		this.userBitrhDate = userBitrhDate;
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
 	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-
-	public Timestamp getUserLastCon() {
-		return userLastCon;
-	}
-
-	public void setUserLastCon(Timestamp userLastCon) {
-		this.userLastCon = userLastCon;
-	}
-
-	public String getStatMessage() {
-		return statMessage;
-	}
-
-	public void setStatMessage(String statMessage) {
-		this.statMessage = statMessage;
-	}
-
 }

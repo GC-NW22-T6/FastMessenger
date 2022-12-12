@@ -1,19 +1,11 @@
 package client;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.*;
 import javax.swing.border.Border;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
 public class ChangeFrame extends JFrame implements ActionListener {
 
@@ -43,7 +35,7 @@ public class ChangeFrame extends JFrame implements ActionListener {
 		setTitle("비밀번호 변경");
 
 		/* PasswordField 크기 작업 */
-
+		
 		pw = new JPasswordField() {
 			@Override
 			public void setBorder(Border border) {
@@ -53,12 +45,14 @@ public class ChangeFrame extends JFrame implements ActionListener {
 		changePanel.add(pw);
 		pw.setOpaque(false);
 
+		
 		/* Button 크기 작업 */
 		changeBtn = new JButton();
 		changeBtn.setBounds(354, 206, 82, 33);
 		changeBtn.setContentAreaFilled(false);
 		changeBtn.setBorderPainted(false);
 		changePanel.add(changeBtn);
+		
 
 		/* Panel 추가 작업 */
 		add(changePanel);
@@ -69,28 +63,28 @@ public class ChangeFrame extends JFrame implements ActionListener {
 		setSize(455, 280);
 		setLocationRelativeTo(null);
 		changePanel.setLayout(null);
-
+		
 		setResizable(false);
 		setVisible(true);
 	}
 
 	/* Button 이벤트 리스너 */
-
+	
 	public void actionPerformed(ActionEvent e) {
 		String upass = "";
 		for (int i = 0; i < pw.getPassword().length; i++) {
 			upass = upass + pw.getPassword()[i];
 		}
-		/*
-		 * if (e.getSource() == changeBtn) { if (upass.equals("")) {
-		 * JOptionPane.showMessageDialog(null, "모든 정보를 기입해주세요", "회원가입 실패",
-		 * JOptionPane.ERROR_MESSAGE); System.out.println("회원가입 실패 > 회원정보 미입력"); }
-		 * 
-		 * else if (!upass.equals("")) { if (함수 들어가야함) { } } }
-		 * 
-		 * 
-		 * else { System.out.println("오류입니다"); }
-		 */
+		
+		if (e.getSource() == changeBtn) {
+			System.out.println("1");
+		}
+		
+
+		else {
+			System.out.println("오류입니다");
+		}
+
 	}
 
 	boolean joinCheck(String _i, String _p) {
@@ -122,4 +116,5 @@ public class ChangeFrame extends JFrame implements ActionListener {
 
 		return flag;
 	}
+	
 }
