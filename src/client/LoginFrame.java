@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.json.simple.parser.ParseException;
-import server.JSONHandle;
 
 public class LoginFrame extends JFrame implements ActionListener {
 
@@ -77,7 +76,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		pw.setBounds(145, 263, 201, 13);
 		login.add(pw);
 		pw.setOpaque(false);
-		
+
 		pw.addKeyListener(new LogindAction());
 
 		/* Button 작업 */
@@ -150,19 +149,19 @@ public class LoginFrame extends JFrame implements ActionListener {
 			while (true) {
 				try {
 					String line = mainClient.br.readLine();
-					if (JSONHandle.getSCode(line) == 1) {
+					if (clientJSONHandle.getSCode(line) == 1) {
 						String salt = clientJSONHandle.getSalt(line);
-						String pw = null;
+						String pww = null;
 						try {
-							pw = Salt.validate(upass, salt);
+							pww = Salt.validate(upass, salt);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						mainClient.pw.println(clientJSONHandle.make102(uid, pw));
+						mainClient.pw.println(clientJSONHandle.make102(uid, pww));
 						while (true) {
 							String line102 = mainClient.br.readLine();
-							if (JSONHandle.getSCode(line102) == 1) {
+							if (clientJSONHandle.getSCode(line102) == 1) {
 								try {
 									User user = clientJSONHandle.makeJSONtoUser(line102);
 									mainClient.thisUser = user;
