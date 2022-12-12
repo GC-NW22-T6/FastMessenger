@@ -34,7 +34,7 @@ public class JSONHandle {
 		jsonRoot.put("StatusCode", 01);// 01: 정상, 02: 유저 없음, 03: 비번 틀림 // If문 처리하여 Statcode 따라서 이후 Put, Get 다르게.
 
 		JSONObject jsonData = new JSONObject(); // data 객체 생성
-		jsonData.put("id", "testID");
+		jsonData.put("ID", "testID");
 		jsonData.put("name", "testUserName");
 		jsonData.put("password", "testPassword");
 		jsonData.put("statMessage", "메롱:P");
@@ -127,6 +127,22 @@ public class JSONHandle {
 
 	}
 
+	public static User makeJSONtoUser(String line) throws org.json.simple.parser.ParseException {
+		JSONParser parser = new JSONParser();
+		JSONObject jsonResult = (JSONObject) parser.parse(line); // json객체 선언 (json 파싱)
+		JSONObject jsoninner = (JSONObject) jsonResult.get("data");
+		User user = new User();
+		user.setUserID((String) jsoninner.get("ID"));
+		user.setUserPassword((String) jsoninner.get("PW"));
+		user.setUserName((String) jsoninner.get("name"));
+		user.setStatMessage((String) jsoninner.get("statMessage"));
+		user.setUserEmail((String) jsoninner.get("email"));
+		user.setUserPhoneNum((String) jsoninner.get("phone"));
+
+		return user;
+
+	}
+
 	public static String getSalt(String UID) throws ClassNotFoundException, SQLException {
 		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
 		jsonRoot.put("StatusCode", 01);// 01: 정상, 02: 유저 없음, 03: 비번 틀림 // If문 처리하여 Statcode 따라서 이후 Put, Get 다르게.
@@ -142,6 +158,11 @@ public class JSONHandle {
 
 	public static String getError(int i) {
 		if (i == 2) {
+			JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
+			jsonRoot.put("StatusCode", 01);
+			String json = jsonRoot.toJSONString(); // String 변환
+			return json;
+		} else if (i == 2) {
 			JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
 			jsonRoot.put("StatusCode", 02);
 			String json = jsonRoot.toJSONString(); // String 변환

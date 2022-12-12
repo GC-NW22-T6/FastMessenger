@@ -63,8 +63,12 @@ public class mainServer {
 					} else if (scode == 102) { // Login: Login function
 						Integer valid = JSONHandle.validIDPW(line);
 						if (valid == 1) { // Login success
-							User user = SQLInterface.getuserbyUID(JSONHandle.getUID(line));
+							String UID = JSONHandle.getUID(line);
+							User user = SQLInterface.getuserbyUID(UID);
 							pw.println(JSONHandle.makeUsertoJSON(user));
+							synchronized (client_all) {
+								client_all.put(UID, this);
+							}
 							break;
 						} else if (valid == 2) { // Wrong PW
 							pw.println(JSONHandle.getError(02));
@@ -72,7 +76,13 @@ public class mainServer {
 							pw.println(JSONHandle.getError(03));
 						}
 					} else if (scode == 201) { // Join
-
+						Integer valid = JSONHandle.validIDPW(line);
+						if (valid == 1 || valid == 2) {
+							User user = JSONHandle.makeJSONtoUser(line);
+							pw.println(JSONHandle.getError(01));
+						} else { // Exist ID
+							pw.println(JSONHandle.getError(03));
+						}
 					}
 				}
 			} catch (IOException | ParseException e) {
