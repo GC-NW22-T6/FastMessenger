@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,8 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-
-import server.JSONHandle;
 
 public class LoginFrame extends JFrame implements ActionListener {
 
@@ -142,19 +141,19 @@ public class LoginFrame extends JFrame implements ActionListener {
 			}
 
 			mainClient.setClientName(uid);
-			mainClient.pw.println(JSONHandle.make101(uid));
+			mainClient.pw.println(clientJSONHandle.make101(uid));
 			while (true) {
 				try {
-					String salt = JSONHandle.getSalt(mainClient.br.readLine());
-					String pw;
+					String salt = clientJSONHandle.getSalt(mainClient.br.readLine());
+					String pw = null;
 					try {
 						pw = Salt.validate(upass, salt);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					mainClient.pw.println(JSONHandle.make102(uid, pw));
-				} catch (IOException e1) {
+					mainClient.pw.println(clientJSONHandle.make102(uid, pw));
+				} catch (IOException | ClassNotFoundException | SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

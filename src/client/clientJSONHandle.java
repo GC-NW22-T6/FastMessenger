@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 import server.SQLInterface;
 
-public class JSONHandle {
+public class clientJSONHandle {
 
 	public static void test(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
 		Socket socket = null;
@@ -194,7 +194,7 @@ public class JSONHandle {
 
 	}
 
-	public static char[] make102(String uid, String pw) {
+	public static String make102(String uid, String pw) {
 		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
 		jsonRoot.put("StatusCode", 102);
 		JSONObject jsonData = new JSONObject(); // data 객체 생성
