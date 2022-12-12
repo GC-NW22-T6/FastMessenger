@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.json.simple.parser.ParseException;
-
 import server.JSONHandle;
 
 public class LoginFrame extends JFrame implements ActionListener {
@@ -78,6 +77,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 		pw.setBounds(145, 263, 201, 13);
 		login.add(pw);
 		pw.setOpaque(false);
+		
+		pw.addKeyListener(new LogindAction());
 
 		/* Button 작업 */
 
@@ -192,7 +193,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 			// TODO Auto-generated method stub
 			if (e.getKeyCode() == 10) { // 엔터를 누를 때 보내기 버튼을 강제 클릭
 
-				// bHome.doClick();
+				loginBtn.doClick();
 
 			}
 
