@@ -154,7 +154,7 @@ public class JSONHandle {
 
 	public static String getSalt(String UID) throws ClassNotFoundException, SQLException {
 		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
-		jsonRoot.put("StatusCode", 01);// 01: 정상, 02: 유저 없음, 03: 비번 틀림 // If문 처리하여 Statcode 따라서 이후 Put, Get 다르게.
+		jsonRoot.put("StatusCode", 101);// 01: 정상, 02: 유저 없음, 03: 비번 틀림 // If문 처리하여 Statcode 따라서 이후 Put, Get 다르게.
 
 		JSONObject jsonData = new JSONObject(); // data 객체 생성
 		jsonData.put("salt", SQLInterface.getSaltbyUID(UID));

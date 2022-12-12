@@ -22,7 +22,7 @@ public class Salt {
 		return tmpStrings;
 	}
 
-	public String validate(String pwd, String salt) {
+	public static String validate(String pwd, String salt) {
 		Salt en = new Salt();
 
 //		System.out.println("pwd : " + pwd);

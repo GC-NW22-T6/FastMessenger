@@ -16,6 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import server.JSONHandle;
+
 public class LoginFrame extends JFrame implements ActionListener {
 
 	ImageIcon icon; // 백그라운드 이미지
@@ -143,10 +145,15 @@ public class LoginFrame extends JFrame implements ActionListener {
 			mainClient.pw.println(JSONHandle.make101(uid));
 			while (true) {
 				try {
-					Integer temp = Integer.parseInt(mainClient.br.readLine());
-					if (temp == 1) {
-
+					String salt = JSONHandle.getSalt(mainClient.br.readLine());
+					String pw;
+					try {
+						pw = Salt.validate(upass, salt);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+					mainClient.pw.println(JSONHandle.make102(uid, pw));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

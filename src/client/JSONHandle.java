@@ -194,4 +194,18 @@ public class JSONHandle {
 
 	}
 
+	public static char[] make102(String uid, String pw) {
+		JSONObject jsonRoot = new JSONObject(); // jsonObject 생성
+		jsonRoot.put("StatusCode", 102);
+		JSONObject jsonData = new JSONObject(); // data 객체 생성
+		jsonData.put("ID", uid);
+		jsonData.put("PW", pw);
+		jsonRoot.put("data", jsonData); // json 생성
+
+		String json = jsonRoot.toJSONString(); // String 변환
+
+		return json;
+
+	}
+
 }
