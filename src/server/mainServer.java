@@ -19,8 +19,6 @@ public class mainServer {
 	Map<String, Connection> client_all = new HashMap<>(); // manage users
 
 	public Integer roomNum = 1;
-	public Object scode;
-	public Object scode;
 
 	public mainServer() throws IOException {
 		listener = new ServerSocket(portNum); // initialize
@@ -59,7 +57,6 @@ public class mainServer {
 					if (scode == 101) { // Login: get salt to login
 						String salt = JSONHandle.getSalt(line);
 						pw.println(salt);
-						break;
 					} else if (scode == 102) { // Login: Login function
 						Integer valid = JSONHandle.validIDPW(line);
 						if (valid == 1) { // Login success
@@ -69,7 +66,6 @@ public class mainServer {
 							synchronized (client_all) {
 								client_all.put(UID, this);
 							}
-							break;
 						} else if (valid == 2) { // Wrong PW
 							pw.println(JSONHandle.getError(02));
 						} else { // Wrong ID
@@ -79,13 +75,22 @@ public class mainServer {
 						Integer valid = JSONHandle.validIDPW(line);
 						if (valid == 1 || valid == 2) {
 							User user = JSONHandle.makeJSONtoUser(line);
+							SQLInterface.initUser(user);
 							pw.println(JSONHandle.getError(01));
 						} else { // Exist ID
 							pw.println(JSONHandle.getError(03));
 						}
+					} else if (scode == 301) { // Modify PW
+						Integer valid = JSONHandle.validPWChange(line);
+						if (valid == 1) {
+							pw.println(JSONHandle.getError(01));
+						} else { // Wrong ID, Phone, or Name
+							pw.println(JSONHandle.getError(04));
+						}
 					}
 				}
-			} catch (IOException | ParseException e) {
+			} catch (IOException | ParseException | ClassNotFoundException | SQLException
+					| java.text.ParseException e) {
 				synchronized (client_all) {
 					try {
 						SQLInterface.client_logout(this.getClientName());

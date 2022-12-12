@@ -1,4 +1,4 @@
-package server;
+package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,45 +16,47 @@ import java.text.SimpleDateFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import server.SQLInterface;
+
 public class JSONHandle {
 
 	public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
 		Socket socket = null;
 
-		// ¿¬°á ¿äÃ» //
-		socket = new Socket(); // °´Ã¼ »ı¼º
-		socket.connect(new InetSocketAddress("IPNUMBER", 50001)); // ¼ÒÄÏ ¿¬°á (¾ÆÀÌÇÇ ¹× Æ÷Æ®¹øÈ£ ºÎ¿©)
-		System.out.println("Connect Success!"); // Ãâ·Â¹®
+		// ì—°ê²° ìš”ì²­ //
+		socket = new Socket(); // ê°ì²´ ìƒì„±
+		socket.connect(new InetSocketAddress("IPNUMBER", 50001)); // ì†Œì¼“ ì—°ê²° (ì•„ì´í”¼ ë° í¬íŠ¸ë²ˆí˜¸ ë¶€ì—¬)
+		System.out.println("Connect Success!"); // ì¶œë ¥ë¬¸
 
-		// ÀÔÃâ·Â ½ºÆ®¸² ¾ò±â //
+		// ì…ì¶œë ¥ ìŠ¤íŠ¸ë¦¼ ì–»ê¸° //
 		InputStream is = socket.getInputStream();
 		OutputStream os = socket.getOutputStream();
 
-		// ¼­¹ö -> Å¬¶óÀÌ¾ğÆ® //
-		JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
-		jsonRoot.put("StatusCode", 01);// 01: Á¤»ó, 02: À¯Àú ¾øÀ½, 03: ºñ¹ø Æ²¸² // If¹® Ã³¸®ÇÏ¿© Statcode µû¶ó¼­ ÀÌÈÄ Put, Get ´Ù¸£°Ô.
+		// ì„œë²„ -> í´ë¼ì´ì–¸íŠ¸ //
+		JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
+		jsonRoot.put("StatusCode", 01);// 01: ì •ìƒ, 02: ìœ ì € ì—†ìŒ, 03: ë¹„ë²ˆ í‹€ë¦¼ // Ifë¬¸ ì²˜ë¦¬í•˜ì—¬ Statcode ë”°ë¼ì„œ ì´í›„ Put, Get ë‹¤ë¥´ê²Œ.
 
-		JSONObject jsonData = new JSONObject(); // data °´Ã¼ »ı¼º
+		JSONObject jsonData = new JSONObject(); // data ê°ì²´ ìƒì„±
 		jsonData.put("ID", "testID");
 		jsonData.put("name", "testUserName");
 		jsonData.put("PW", "testPassword");
-		jsonData.put("statMessage", "¸Ş·Õ:P");
+		jsonData.put("statMessage", "ë©”ë¡±:P");
 		jsonData.put("lastCon", "2022.12.05 12:03:34");
-		// µîµî °è¼Ó Ãß°¡
+		// ë“±ë“± ê³„ì† ì¶”ê°€
 
-		jsonRoot.put("data", jsonData); // json »ı¼º
+		jsonRoot.put("data", jsonData); // json ìƒì„±
 
-		String json = jsonRoot.toJSONString(); // String º¯È¯
+		String json = jsonRoot.toJSONString(); // String ë³€í™˜
 
-		System.out.println(json); // Ãâ·ÂÇØº¸±â
+		System.out.println(json); // ì¶œë ¥í•´ë³´ê¸°
 
 		os = socket.getOutputStream(); // outputStream
-		PrintWriter pw = new PrintWriter(os); // PrintWriter¸¦ ¼±¾ğ
-		pw.println(json); // printlnÀ» ÀÌ¿ëÇÏ¿© \r\nÀ» °°ÀÌ º¸³¿
+		PrintWriter pw = new PrintWriter(os); // PrintWriterë¥¼ ì„ ì–¸
+		pw.println(json); // printlnì„ ì´ìš©í•˜ì—¬ \r\nì„ ê°™ì´ ë³´ëƒ„
 		pw.flush(); // flush
 		os.flush();
 
-		// Å¬¶óÀÌ¾ğÆ® -> ¼­¹ö //
+		// í´ë¼ì´ì–¸íŠ¸ -> ì„œë²„ //
 		is = socket.getInputStream(); // inputStream
 
 		Reader reader = new InputStreamReader(is);
@@ -63,7 +65,7 @@ public class JSONHandle {
 
 		JSONParser parser = new JSONParser();
 
-		JSONObject jsonResult = (JSONObject) parser.parse(strJson); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
+		JSONObject jsonResult = (JSONObject) parser.parse(strJson); // jsonê°ì²´ ì„ ì–¸ (json íŒŒì‹±)
 		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
 		if (StatusCode == 01) {
 			JSONObject jsoninner = (JSONObject) jsonResult.get("data");
@@ -73,7 +75,7 @@ public class JSONHandle {
 
 		}
 
-		System.out.println("StatCode: " + Integer.toString(StatusCode)); // action Ãâ·Â
+		System.out.println("StatCode: " + Integer.toString(StatusCode)); // action ì¶œë ¥
 
 		is.close(); // InputStream Close
 		os.close();
@@ -82,47 +84,27 @@ public class JSONHandle {
 
 	public static Integer getSCode(String line) throws org.json.simple.parser.ParseException {
 		JSONParser parser = new JSONParser();
-		JSONObject jsonResult = (JSONObject) parser.parse(line); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
+		JSONObject jsonResult = (JSONObject) parser.parse(line); // jsonê°ì²´ ì„ ì–¸ (json íŒŒì‹±)
 		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
 		return StatusCode;
 	}
 
-	public static String getUID(String line) throws org.json.simple.parser.ParseException {
-		JSONParser parser = new JSONParser();
-		JSONObject jsonResult = (JSONObject) parser.parse(line); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
-		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
-		JSONObject jsoninner = (JSONObject) jsonResult.get("data");
-		String name = (String) jsoninner.get("ID");
-		return name;
-	}
-
-	public static Integer validIDPW(String line)
-			throws org.json.simple.parser.ParseException, ClassNotFoundException, SQLException {
-		JSONParser parser = new JSONParser();
-		JSONObject jsonResult = (JSONObject) parser.parse(line); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
-		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
-		JSONObject jsoninner = (JSONObject) jsonResult.get("data");
-		String id = (String) jsoninner.get("ID");
-		String pw = (String) jsoninner.get("PW");
-		return SQLInterface.validLogin(id, pw);
-	}
-
 	public static String makeUsertoJSON(User user) {
-		JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
-		jsonRoot.put("StatusCode", 01);// 01: Á¤»ó, 02: À¯Àú ¾øÀ½, 03: ºñ¹ø Æ²¸² // If¹® Ã³¸®ÇÏ¿© Statcode µû¶ó¼­ ÀÌÈÄ Put, Get ´Ù¸£°Ô.
+		JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
+		jsonRoot.put("StatusCode", 01);// 01: ì •ìƒ, 02: ìœ ì € ì—†ìŒ, 03: ë¹„ë²ˆ í‹€ë¦¼ // Ifë¬¸ ì²˜ë¦¬í•˜ì—¬ Statcode ë”°ë¼ì„œ ì´í›„ Put, Get ë‹¤ë¥´ê²Œ.
 
-		JSONObject jsonData = new JSONObject(); // data °´Ã¼ »ı¼º
+		JSONObject jsonData = new JSONObject(); // data ê°ì²´ ìƒì„±
 //		jsonData.put("id", user.getUserID());
 		jsonData.put("name", user.getUserName());
 //		jsonData.put("password", user.getUserPassword());
 		jsonData.put("statMessage", user.getStatMessage());
 		jsonData.put("lastCon", user.getUserLastCon());
 		jsonData.put("phone", user.getUserPhoneNum());
-		// µîµî °è¼Ó Ãß°¡
+		// ë“±ë“± ê³„ì† ì¶”ê°€
 
-		jsonRoot.put("data", jsonData); // json »ı¼º
+		jsonRoot.put("data", jsonData); // json ìƒì„±
 
-		String json = jsonRoot.toJSONString(); // String º¯È¯
+		String json = jsonRoot.toJSONString(); // String ë³€í™˜
 
 		return json;
 
@@ -130,7 +112,7 @@ public class JSONHandle {
 
 	public static User makeJSONtoUser(String line) throws org.json.simple.parser.ParseException, ParseException {
 		JSONParser parser = new JSONParser();
-		JSONObject jsonResult = (JSONObject) parser.parse(line); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
+		JSONObject jsonResult = (JSONObject) parser.parse(line); // jsonê°ì²´ ì„ ì–¸ (json íŒŒì‹±)
 		JSONObject jsoninner = (JSONObject) jsonResult.get("data");
 		User user = new User();
 		user.setUserID((String) jsoninner.get("ID"));
@@ -153,33 +135,33 @@ public class JSONHandle {
 	}
 
 	public static String getSalt(String UID) throws ClassNotFoundException, SQLException {
-		JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
-		jsonRoot.put("StatusCode", 01);// 01: Á¤»ó, 02: À¯Àú ¾øÀ½, 03: ºñ¹ø Æ²¸² // If¹® Ã³¸®ÇÏ¿© Statcode µû¶ó¼­ ÀÌÈÄ Put, Get ´Ù¸£°Ô.
+		JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
+		jsonRoot.put("StatusCode", 01);// 01: ì •ìƒ, 02: ìœ ì € ì—†ìŒ, 03: ë¹„ë²ˆ í‹€ë¦¼ // Ifë¬¸ ì²˜ë¦¬í•˜ì—¬ Statcode ë”°ë¼ì„œ ì´í›„ Put, Get ë‹¤ë¥´ê²Œ.
 
-		JSONObject jsonData = new JSONObject(); // data °´Ã¼ »ı¼º
+		JSONObject jsonData = new JSONObject(); // data ê°ì²´ ìƒì„±
 		jsonData.put("salt", SQLInterface.getSaltbyUID(UID));
-		jsonRoot.put("data", jsonData); // json »ı¼º
+		jsonRoot.put("data", jsonData); // json ìƒì„±
 
-		String json = jsonRoot.toJSONString(); // String º¯È¯
+		String json = jsonRoot.toJSONString(); // String ë³€í™˜
 
 		return json;
 	}
 
 	public static String getError(int i) {
 		if (i == 2) {
-			JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
+			JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
 			jsonRoot.put("StatusCode", 01);
-			String json = jsonRoot.toJSONString(); // String º¯È¯
+			String json = jsonRoot.toJSONString(); // String ë³€í™˜
 			return json;
 		} else if (i == 2) {
-			JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
+			JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
 			jsonRoot.put("StatusCode", 02);
-			String json = jsonRoot.toJSONString(); // String º¯È¯
+			String json = jsonRoot.toJSONString(); // String ë³€í™˜
 			return json;
 		} else if (i == 3) {
-			JSONObject jsonRoot = new JSONObject(); // jsonObject »ı¼º
+			JSONObject jsonRoot = new JSONObject(); // jsonObject ìƒì„±
 			jsonRoot.put("StatusCode", 03);
-			String json = jsonRoot.toJSONString(); // String º¯È¯
+			String json = jsonRoot.toJSONString(); // String ë³€í™˜
 			return json;
 		}
 		return null;
@@ -188,7 +170,7 @@ public class JSONHandle {
 	public static Integer validPWChange(String line)
 			throws org.json.simple.parser.ParseException, ClassNotFoundException, SQLException {
 		JSONParser parser = new JSONParser();
-		JSONObject jsonResult = (JSONObject) parser.parse(line); // json°´Ã¼ ¼±¾ğ (json ÆÄ½Ì)
+		JSONObject jsonResult = (JSONObject) parser.parse(line); // jsonê°ì²´ ì„ ì–¸ (json íŒŒì‹±)
 		Integer StatusCode = (Integer) jsonResult.get("StatusCode");
 		JSONObject jsoninner = (JSONObject) jsonResult.get("data");
 		String id = (String) jsoninner.get("ID");

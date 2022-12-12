@@ -100,4 +100,57 @@ public class SQLInterface {
 
 	}
 
+	public static void initUser(User user) throws SQLException, ClassNotFoundException {
+		Connection conn = DriverManager.getConnection(dburl, dbUser, dbpasswd);
+
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+		PreparedStatement ps = null;
+
+		String sql = "INSERT INTO client_list VALUES (?, ?, ?, ?, ?, ?, ? ,? ,? ,?);";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, user.getUserID());
+		ps.setString(2, user.getUserPassword());
+		ps.setString(3, user.getUserName());
+		ps.setString(4, user.getUserEmail());
+		ps.setString(5, user.getUserPhoneNum());
+		ps.setString(6, user.getUserNickname());
+		ps.setDate(7, user.getUserBitrhDate());
+		ps.setString(8, user.getStatMessage());
+		ps.setTimestamp(9, user.getUserLastCon());
+		ps.setString(10, user.getSalt());
+		ps.executeUpdate();
+		ps.close();
+		System.out.println("Inserting Successfully!");
+	}
+
+	public static Integer validPWChange(String id, String name, String phone, String pw, String salt)
+			throws SQLException, ClassNotFoundException {
+		Connection conn = DriverManager.getConnection(dburl, dbUser, dbpasswd);
+
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+		PreparedStatement ps = null;
+
+		String sql = "SELECT client_id FROM client_list WHERE client_id = ?, client_name=?, client_phone=?;";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, id);
+		ps.setString(2, name);
+		ps.setString(3, phone);
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			PreparedStatement ps1 = null;
+
+			String sql1 = "UPDATE client_list SET client_password=?, salt=? WHERE client_id = ?;";
+			ps1 = conn.prepareStatement(sql);
+			ps1.setString(1, pw);
+			ps1.setString(2, salt);
+			ps1.setString(3, id);
+			ResultSet rs1 = ps1.executeQuery();
+			return 1;
+		}
+		return 4;
+
+	}
 }
