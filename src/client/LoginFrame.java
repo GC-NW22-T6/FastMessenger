@@ -97,7 +97,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 		changeBtn = new JButton();
 		changeBtn.setBounds(222, 396, 128, 14);
-		// changeBtn.setBorderPainted(false);
+		changeBtn.setBorderPainted(false);
 		changeBtn.setContentAreaFilled(false);
 		login.add(changeBtn);
 
